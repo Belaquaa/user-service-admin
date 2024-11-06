@@ -9,9 +9,7 @@ public interface AdminUserService {
 
     User updateUser(Long id, User user);
 
-    User getUserById(Long id);
-
-    User getUserByIdIncludingDeleted(Long id);
+    User getUserById(Long id, boolean includeDeleted);
 
     void restoreUserById(Long id);
 

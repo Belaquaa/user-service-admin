@@ -37,15 +37,10 @@ public class AdminUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(
+    public ResponseEntity<User> getUserById(
             @PathVariable Long id,
             @RequestParam(name = "includeDeleted", defaultValue = "false") boolean includeDeleted) {
-        User user;
-        if (includeDeleted) {
-            user = adminUserService.getUserByIdIncludingDeleted(id);
-        } else {
-            user = adminUserService.getUserById(id);
-        }
+        User user = adminUserService.getUserById(id, includeDeleted);
         return ResponseEntity.ok(user);
     }
 

@@ -38,17 +38,15 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    @Cacheable(value = "users", key = "#id")
-    public User getUserById(Long id) {
-        return userRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
-    }
-
-    @Override
-    @Cacheable(value = "users", key = "#id + '-includeDeleted'")
-    public User getUserByIdIncludingDeleted(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+    @Cacheable(value = "users", key = "#id + '-' + #includeDeleted")
+    public User getUserById(Long id, boolean includeDeleted) {
+        if (includeDeleted) {
+            return userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+        } else {
+            return userRepository.findByIdAndIsDeletedFalse(id)
+                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+        }
     }
 
     @Override
